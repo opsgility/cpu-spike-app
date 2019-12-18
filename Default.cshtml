@@ -1,0 +1,58 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "PPE - Deployment Demo App";
+}
+
+@section featured {
+<section class="featured">
+    <div class="content-wrapper">
+        <hgroup class="title">
+            <h1>@Page.Title</h1>
+            <br />
+            <h2>This app is currently executing on: @Environment.MachineName </h2>
+        </hgroup>
+    </div>
+</section>
+}
+
+<h2>CPU Spike Configuration</h2>
+
+<input type="text" value="95" style="width: 40px" id="cpuPercent"/> Percent
+<input type="text" value="60" style="width: 40px" id="cpuDuration" /> Minutes
+<input type="button" id="cmdSpikeCPU" value="Spike CPU" />
+
+<hr />
+<h2>Health Probe Configuration</h2>
+<br />
+<a href="/healthcheck">Click here to see the health probe page</a>
+<br />
+<h4>To remove the node from the load balancer:</h4>
+<ol class="round">
+    <li class="one">
+        Open the web.config on the node you wish to remove.
+        <br />
+        &nbsp;
+    </li>
+
+    <li class="two">
+        Modify the IsHealthy appsettings key to be false.
+        <br />
+        &nbsp;
+    </li>
+
+    <li class="three">
+        Wait 15 seconds and refresh the main page. The node should no longer appear in the load balanced set.
+        <br />
+        &nbsp;
+    </li>
+</ol>
+
+
+<script>
+    $("#cmdSpikeCPU").click(function () {
+        var cpupercent = $("#cpuPercent").val();
+        var cpuduration = $("#cpuDuration").val();
+        window.location = "/spikecpu?DurationInMinutes=" + cpuduration + "&CPUPercentage=" + cpupercent;
+    });
+
+</script>

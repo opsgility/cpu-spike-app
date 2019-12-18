@@ -1,0 +1,36 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "PPE - Health Probes Demo App";
+}
+
+
+@{
+    var IsHealthy = System.Web.Configuration.WebConfigurationManager.AppSettings["IsHealthy"].AsBool();
+
+    if (IsHealthy == false)
+    {
+        throw new HttpException("Something bad is happening in this app!");
+    }
+   
+}
+
+
+<script>
+    // Should really validate in a real health probe
+    $(document).ready(function () {
+        $("#divValidating").delay(800).fadeOut(400);
+        $("#divValidated").delay(1200).fadeIn(400);
+    });
+</script>
+
+<div id="divValidating" style="min-height: 200px">
+  <h1>Validating Site .... </h1>
+</div>
+
+<div id="divValidated" style="min-height: 200px; display: none">
+    <h1>Site is healthy! </h1>
+    <br />
+    <h3>As long as this page reports HTTP 200 the load balancer considers it healthy.</h3>
+</div>
+
+

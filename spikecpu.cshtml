@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "PPE - Spike CPU Page";
+}
+
+
+@{
+    String Message = "";
+    
+    bool IsValid = false;
+    
+    int DurationInMinutes = 0;
+    byte CPUPercentage = 0;
+
+    if (Int32.TryParse(Request.QueryString["DurationInMinutes"], out DurationInMinutes) == true && Byte.TryParse(Request.QueryString["CPUPercentage"], out CPUPercentage) == true)
+    {
+        if ((CPUPercentage > 10 && CPUPercentage <= 100) && DurationInMinutes > 1)
+        {
+            IsValid = true;
+        }
+    }
+        
+    if(IsValid == true)
+    {
+        Opsgility.CPU.Library.CPUBurner cpu = new Opsgility.CPU.Library.CPUBurner();
+        cpu.NumberOfProcs = (byte)Environment.ProcessorCount;
+        cpu.DoWorkAsync(CPUPercentage, (DurationInMinutes * 1000 * 60));
+        Message = String.Format("Using {0}% of the CPU for {1} Minutes", CPUPercentage, DurationInMinutes);
+    }
+    else
+    {
+        Message= "Valid Query String: DurationInMinutes=(Greater than 1) CPUPercentage=(Greater then 10 and less then or equal to 100)";
+    }
+    
+}
+
+<div>
+    
+<h3>@Message</h3>
+
+</div>
