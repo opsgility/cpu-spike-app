@@ -7,7 +7,7 @@ $destinationFolder = "C:\Inetpub\wwwroot"
 
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
 $WebClient = New-Object System.Net.WebClient
-$WebClient.DownloadFile($cloudShopUrl,$destinationPath)
+$WebClient.DownloadFile($appUrl,$destinationPath)
 
 (new-object -com shell.application).namespace($destinationFolder).CopyHere((new-object -com shell.application).namespace($destinationPath).Items(),16)
 
